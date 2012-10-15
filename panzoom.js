@@ -3,12 +3,13 @@
   $.fn.panzoom = function(options) {
     var $img = $(this)
       , scale = 1.0
-      , panx = 0
-      , pany = 0
+      , focalx = 0
+      , focaly = 0
 
      options = options || {}
      options.width = options.width || 100
      options.height = options.height || 100
+     options.transition = options.transition || 1.0
 
      $img.wrap(
        $('<div/>').css({
@@ -28,20 +29,21 @@
        var adjustedScaleX = scale / rawScaleX
        var adjustedScaleY = scale / rawScaleY
 
-       console.log(rawImageWidth, rawImageHeight, rawScaleX, rawScaleY)
+       var adjustedFocalX = (-focalx) * adjustedScaleX
+       var adjustedFocalY = (-focaly) * adjustedScaleY
 
        $img.css({
          '-webkit-transform-origin': '0% 0%',
-         '-webkit-transform': 'translate(' + (-panx) + 'px,' + (-pany) + 'px) scale(' + adjustedScaleX + ',' + adjustedScaleY + ')',
-         '-webkit-transition': '-webkit-transform 1s' 
+         '-webkit-transform': 'translate(' + adjustedFocalX + 'px,' + adjustedFocalY + 'px) scale(' + adjustedScaleX + ',' + adjustedScaleY + ')',
+         '-webkit-transition': '-webkit-transform ' + options.transition + 's' 
        })
      }
      updateCss()
 
      return {
        pan: function(x, y) {
-         panx = x
-         pany = y
+         focalx = x
+         focaly = y
          updateCss()
        },
        zoom: function(level) {
@@ -53,5 +55,4 @@
        }
      }
   }
-
 }())
