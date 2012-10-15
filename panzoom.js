@@ -5,6 +5,10 @@
       , scale = 1.0
       , focalx = 0
       , focaly = 0
+      , rawImageWidth = $img.width()
+      , rawImageHeight = $img.height()
+      , rawScaleX = rawImageWidth / options.width
+      , rawScaleY = rawImageHeight / options.height
 
      options = options || {}
      options.width = options.width || 100
@@ -21,16 +25,10 @@
      )
 
      var updateCss = function() {
-       var rawImageWidth = $img.width()
-       var rawImageHeight = $img.height()
-       var rawScaleX = rawImageWidth / options.width
-       var rawScaleY = rawImageHeight / options.height
-
        var adjustedScaleX = scale / rawScaleX
-       var adjustedScaleY = scale / rawScaleY
-
-       var adjustedFocalX = (-focalx) * adjustedScaleX
-       var adjustedFocalY = (-focaly) * adjustedScaleY
+         , adjustedScaleY = scale / rawScaleY
+         , adjustedFocalX = (-focalx) * adjustedScaleX
+         , adjustedFocalY = (-focaly) * adjustedScaleY
 
        $img.css({
          '-webkit-transform-origin': '0% 0%',
@@ -50,8 +48,23 @@
          scale = level
          updateCss()
        },
-       focusOn: function(x, y, level) {
-         
+       screenToImage: function(x, y) {
+         var adjustedScaleX = scale / rawScaleX
+           , adjustedScaleY = scale / rawScaleY
+           , adjustedFocalX = (-focalx) * adjustedScaleX
+           , adjustedFocalY = (-focaly) * adjustedScaleY
+
+         x /= adjustedScaleX
+         y /= adjustedScaleY
+
+         x += focalx
+         y += focaly
+
+         return {
+           x: x,
+           y: y
+         }
+
        }
      }
   }
