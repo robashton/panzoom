@@ -3,7 +3,7 @@
   $.fn.panzoom = function(options) {
     var $img = $(this)
       , scale = 1.0
-      , focalx = 0
+      , focalx = 0 
       , focaly = 0
       , rawImageWidth = $img.width()
       , rawImageHeight = $img.height()
@@ -51,13 +51,11 @@
        screenToImage: function(x, y) {
          var adjustedScaleX = scale / rawScaleX
            , adjustedScaleY = scale / rawScaleY
-           , adjustedFocalX = (-focalx) * adjustedScaleX
-           , adjustedFocalY = (-focaly) * adjustedScaleY
-
+           
          x /= adjustedScaleX
          y /= adjustedScaleY
 
-         x += focalx
+         x += focalx 
          y += focaly
 
          return {
