@@ -62,7 +62,7 @@
           var y = lastDrag.y - currentDrag.y 
           lastDrag.x = currentDrag.x
           lastDrag.y = currentDrag.y
-          zoomer.pan(x, y)
+          zoomer.pan(x, y, 0)
         }
 
         hammer.ondragstart = function(e) {
