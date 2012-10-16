@@ -17,17 +17,52 @@
           height: 480
         })
 
-        $img.dblclick(function(e) {
-          var imagePosition = zoomer.screenToImage(e.clientX, e.clientY)
+        var hammer = new Hammer($img.get(0))
+
+        hammer.ondoubletap = function(e) {
+          var imagePosition = zoomer.screenToImage(e.position[0].x, e.position[0].y)
 
           if(zoomed) {
             zoomer.reset()
           } else {
-            zoomer.zoom(4.0)
-            zoomer.pan(imagePosition.x, imagePosition.y)
+            zoomer.zoomTo(4.0)
+            zoomer.panTo(imagePosition.x, imagePosition.y)
           }
           zoomed = !zoomed
-        })
+        }
+
+
+        var dragTimer = null
+        var lastDrag = {
+          x: 0,
+          y: 0
+        }
+        var currentDrag = {
+          x: 0,
+          y: 0
+        }
+        function updateDrag() {
+          var x = lastDrag.x - currentDrag.x
+          var y = lastDrag.y - currentDrag.y 
+          lastDrag.x = currentDrag.x
+          lastDrag.y = currentDrag.y
+          zoomer.pan(x, y)
+        }
+
+        hammer.ondragstart = function(e) {
+          lastDrag.x = 0
+          lastDrag.y = 0
+          dragTimer = setInterval(updateDrag, 20)
+        }
+        hammer.ondrag = function(e) {
+          currentDrag.x = e.distanceX
+          currentDrag.y = e.distanceY
+        }
+
+        hammer.ondragend = function() {
+          clearInterval(dragTimer)
+          updateDrag()
+        }
       }) 
     </script>
   </body>

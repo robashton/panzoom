@@ -25,6 +25,7 @@
      )
 
      var updateCss = function() {
+       console.log(focalx, focaly)
        var adjustedScaleX = scale / rawScaleX
          , adjustedScaleY = scale / rawScaleY
          , adjustedFocalX = (-focalx) * adjustedScaleX + rawImageWidth/2.0
@@ -49,11 +50,16 @@
 
      return {
        pan: function(x, y) {
+         focalx += x 
+         focaly += y 
+         updateCss()
+       },
+       panTo: function(x, y) {
          focalx = x
          focaly = y
          updateCss()
        },
-       zoom: function(level) {
+       zoomTo: function(level) {
          scale = level
          updateCss()
        },
