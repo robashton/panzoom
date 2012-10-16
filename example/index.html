@@ -21,16 +21,14 @@
           var imagePosition = zoomer.screenToImage(e.clientX, e.clientY)
 
           if(zoomed) {
-            zoomer.zoom(1.0)
-            zoomer.pan(0.5,0.5) 
+            zoomer.reset()
           } else {
             zoomer.zoom(4.0)
-            console.log(imagePosition.x, imagePosition.y)
             zoomer.pan(imagePosition.x, imagePosition.y)
           }
           zoomed = !zoomed
         })
-      })
+      }) 
     </script>
   </body>
 </html>

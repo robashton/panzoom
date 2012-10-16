@@ -2,13 +2,13 @@
 
   $.fn.panzoom = function(options) {
     var $img = $(this)
-      , scale = 1.0
-      , focalx = 0 
-      , focaly = 0
       , rawImageWidth = $img.width()
       , rawImageHeight = $img.height()
       , rawScaleX = rawImageWidth / options.width
       , rawScaleY = rawImageHeight / options.height
+      , scale = 1.0
+      , focalx = 0
+      , focaly = 0
 
      options = options || {}
      options.width = options.width || 100
@@ -27,16 +27,25 @@
      var updateCss = function() {
        var adjustedScaleX = scale / rawScaleX
          , adjustedScaleY = scale / rawScaleY
-         , adjustedFocalX = (-focalx) * adjustedScaleX
-         , adjustedFocalY = (-focaly) * adjustedScaleY
+         , adjustedFocalX = (-focalx) * adjustedScaleX + rawImageWidth/2.0
+         , adjustedFocalY = (-focaly) * adjustedScaleY + rawImageHeight/2.0
+         , displayedWidth = (rawImageWidth / 2) / adjustedScaleX
+         , displayedHeight = (rawImageHeight / 2) / adjustedScaleY
 
        $img.css({
          '-webkit-transform-origin': '0% 0%',
-         '-webkit-transform': 'translate(' + adjustedFocalX + 'px,' + adjustedFocalY + 'px) scale(' + adjustedScaleX + ',' + adjustedScaleY + ')',
+         '-webkit-transform': 'translate(' + adjustedFocalX + 'px,' + adjustedFocalY + 'px) ' + 
+                              'scale(' + adjustedScaleX + ',' + adjustedScaleY + ')',
          '-webkit-transition': '-webkit-transform ' + options.transition + 's' 
        })
      }
-     updateCss()
+     function reset() {
+       scale = 1.0
+       focalx = rawImageWidth / 2.0 
+       focaly = rawImageHeight / 2.0 
+       updateCss()
+     }
+     reset()
 
      return {
        pan: function(x, y) {
@@ -48,19 +57,14 @@
          scale = level
          updateCss()
        },
+       reset: reset,
        screenToImage: function(x, y) {
          var adjustedScaleX = scale / rawScaleX
            , adjustedScaleY = scale / rawScaleY
-           
-         x /= adjustedScaleX
-         y /= adjustedScaleY
-
-         x += focalx 
-         y += focaly
 
          return {
-           x: x,
-           y: y
+           x: (x - rawImageWidth/2.0) / adjustedScaleX + focalx,
+           y: (y - rawImageHeight/2.0) / adjustedScaleY + focaly
          }
 
        }
