@@ -1,42 +1,42 @@
 (function() {
 
   $.fn.panzoom = function(options) {
+     options = options || {}
+     options.transition = options.transition || 1.0
+
     var $img = $(this)
       , rawImageWidth = $img.width()
       , rawImageHeight = $img.height()
-      , rawScaleX = rawImageWidth / options.width
-      , rawScaleY = rawImageHeight / options.height
       , scale = 1.0
       , focalx = 0
       , focaly = 0
 
-     options = options || {}
-     options.width = options.width || 100
-     options.height = options.height || 100
-     options.transition = options.transition || 1.0
 
      $img.wrap(
        $('<div/>').css({
          'position': 'relative',
-         'width': options.width + 'px',
-         'height': options.height + 'px',
+         'width': rawImageWidth + 'px',
+         'height': rawImageHeight + 'px',
          'overflow': 'hidden'
        })
      )
 
      var updateCss = function() {
-       console.log(focalx, focaly)
-       var adjustedScaleX = scale / rawScaleX
-         , adjustedScaleY = scale / rawScaleY
-         , adjustedFocalX = (-focalx) * adjustedScaleX + rawImageWidth/2.0
-         , adjustedFocalY = (-focaly) * adjustedScaleY + rawImageHeight/2.0
-         , displayedWidth = (rawImageWidth / 2) / adjustedScaleX
-         , displayedHeight = (rawImageHeight / 2) / adjustedScaleY
+
+       if(focalx < 0) focalx = 0
+       if(focaly < 0) focaly = 0
+       if(focalx > rawImageWidth) focalx = rawImageWidth
+       if(focaly > rawImageHeight) focaly = rawImageHeight
+
+       var adjustedFocalX = (-focalx) * scale + rawImageWidth/2.0
+         , adjustedFocalY = (-focaly) * scale + rawImageHeight/2.0
+         , displayedWidth = (rawImageWidth / 2) / scale
+         , displayedHeight = (rawImageHeight / 2) / scale
 
        $img.css({
          '-webkit-transform-origin': '0% 0%',
          '-webkit-transform': 'translate(' + adjustedFocalX + 'px,' + adjustedFocalY + 'px) ' + 
-                              'scale(' + adjustedScaleX + ',' + adjustedScaleY + ')',
+                              'scale(' + scale + ',' + scale + ')',
          '-webkit-transition': '-webkit-transform ' + options.transition + 's' 
        })
      }
@@ -65,12 +65,9 @@
        },
        reset: reset,
        screenToImage: function(x, y) {
-         var adjustedScaleX = scale / rawScaleX
-           , adjustedScaleY = scale / rawScaleY
-
          return {
-           x: (x - rawImageWidth/2.0) / adjustedScaleX + focalx,
-           y: (y - rawImageHeight/2.0) / adjustedScaleY + focaly
+           x: (x - rawImageWidth/2.0) / scale + focalx,
+           y: (y - rawImageHeight/2.0) / scale + focaly
          }
 
        }
