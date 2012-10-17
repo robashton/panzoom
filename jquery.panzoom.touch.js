@@ -3,7 +3,7 @@
     var $img = $(this)
     var zoomer = $img.panzoom() 
     var hammer = new Hammer($img.get(0), {
-      prevent_defaults: true
+      prevent_default: true
     })
     applyPinchFunction(zoomer, hammer)
     applyZoomFunction(zoomer, hammer)
