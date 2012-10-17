@@ -29,6 +29,7 @@
        if(focaly < 0) focaly = 0
        if(focalx > rawImageWidth) focalx = rawImageWidth
        if(focaly > rawImageHeight) focaly = rawImageHeight
+       if(scale <= 0.0001) scale = 0.0001
 
        var adjustedFocalX = (-focalx) * scale + rawImageWidth/2.0
          , adjustedFocalY = (-focaly) * scale + rawImageHeight/2.0
