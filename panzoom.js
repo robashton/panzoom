@@ -60,6 +60,10 @@
          focaly = y
          updateCss(time)
        },
+       zoom: function(amount, time) {
+         scale += amount * scale
+         updateCss(time)
+       },
        zoomTo: function(level, time) {
          scale = level
          updateCss(time)

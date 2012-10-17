@@ -20,14 +20,30 @@
       }
 
       function applyPinchFunction(zoomer, hammer) {
+        var lastScale = 1.0
+        var currentScale = 1.0
+        var zoomTimer = null
+
+        function updateTransform() {
+          var difference = currentScale - lastScale
+          lastScale = currentScale
+          zoomer.zoom(difference,0)
+        }
+
         hammer.ontransformstart = function(e) {
-          console.log(e)
+          lastScale = e.scale
+          currentScale = e.scale
+          zoomTimer = setInterval(updateTransform, 20)
+          return false
         }
         hammer.ontransform = function(e) {
-          console.log(e)
+          currentScale = e.scale
+          return false
         }
         hammer.ontransformend = function(e) {
-          console.log(e)
+          clearInterval(zoomTimer)
+          updateTransform()
+          return false
         }
       }
 
