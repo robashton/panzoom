@@ -20,15 +20,19 @@ For this, the javascript files you need are
 Manually controlled pan + zoom
 -------------
 
-    var controller = $('#myselector').panzoom()
+For this you need the JS files 
 
+- jquery
+- jquery.panzoom.js
+
+    // Set everything up and get the controller
+    var controller = $('#myselector').panzoom()
 
     // Pan by the specified x and y amounts, over the time specified (optional)
     controller.pan(x,y,[time])
 
     // Pan to a specific area on the element, over the time specified (optional)
     controller.panTo(x, y, [time])
-
 
     // Zoom in/out by the specified amount, over the time specified (optional)
     controller.zoom(amount, [time])
