@@ -25,6 +25,7 @@ For this you need the JS files
 - jquery
 - jquery.panzoom.js
 
+And this will give you
 
     var controller = $('#myselector').panzoom()
 
