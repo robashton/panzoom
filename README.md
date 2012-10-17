@@ -26,7 +26,6 @@ For this you need the JS files
 - jquery.panzoom.js
 
 
-    // Set everything up and get the controller
     var controller = $('#myselector').panzoom()
 
     // Pan by the specified x and y amounts, over the time specified (optional)
