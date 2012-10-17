@@ -2,7 +2,9 @@
   $.fn.touchpanzoom = function() {
     var $img = $(this)
     var zoomer = $img.panzoom() 
-    var hammer = new Hammer($img.get(0))
+    var hammer = new Hammer($img.get(0), {
+      prevent_defaults: true
+    })
     applyPinchFunction(zoomer, hammer)
     applyZoomFunction(zoomer, hammer)
     applyDragFunction(zoomer, hammer)
