@@ -23,7 +23,14 @@
 
      var updateCss = function(time) {
        time = typeof time === 'undefined' ? options.transition : time
-       $img.css({'-webkit-transition': '-webkit-transform ' + time + 's'})
+       $img.css(
+         {
+           'transition': 'transform ' + time + 's',
+           '-webkit-transition': '-webkit-transform ' + time + 's',
+           '-moz-transition': '-moz-transform ' + time + 's',
+           '-o-transition': '-o-transform ' + time + 's'
+         }
+       )
 
        if(focalx < 0) focalx = 0
        if(focaly < 0) focaly = 0
@@ -36,10 +43,17 @@
          , displayedWidth = (rawImageWidth / 2) / scale
          , displayedHeight = (rawImageHeight / 2) / scale
 
+       var transform = 'translate(' + adjustedFocalX + 'px,' + adjustedFocalY + 'px) ' + 
+                       'scale(' + scale + ',' + scale + ')';
        $img.css({
+         'tranform-origin' : '0% 0%',
          '-webkit-transform-origin': '0% 0%',
-         '-webkit-transform': 'translate(' + adjustedFocalX + 'px,' + adjustedFocalY + 'px) ' + 
-                              'scale(' + scale + ',' + scale + ')',
+         '-moz-transform-origin': '0% 0%',
+         '-o-transform-origin': '0% 0%',
+         'transform': transform,
+         '-webkit-transform': transform,
+         '-moz-transform': transform,
+         '-o-transform': transform
        })
      }
      function reset(time) {
